@@ -1,7 +1,28 @@
 import xlrd
 
-excel_data_file = xlrd.open_workbook('./8.xls')
-sheet = excel_data_file.sheet_by_index(6)
+#excel_data_file = xlrd.open_workbook('./8.xls')
+#sheet = excel_data_file.sheet_by_index(5)
+
+import requests
+from bs4 import BeautifulSoup
+import urllib
+
+URL = 'https://www.muiv.ru/studentu/fakultety-i-kafedry/fakultet-it/raspisaniya/'
+page = requests.get(URL).text
+soup = BeautifulSoup(page, "html.parser").find_all('p', 'm-doc__name')
+docs = []
+i = 0
+# asoup = soup.find_all('p', 'm-doc__name')
+
+for a in soup:
+    docs.append('https://www.muiv.ru' + a.find('a').get('href'))
+
+file_name, headers = urllib.request.urlretrieve(docs[2])
+#print(file_name)
+excel_data_file = xlrd.open_workbook(file_name)
+sheet = excel_data_file.sheet_by_index(5)
+
+
 
 day_of_week = ''
 count = 0
