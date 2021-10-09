@@ -1,6 +1,9 @@
+import os
 import wget
 import requests
 from bs4 import BeautifulSoup
+
+os.system("./clean.sh")
 
 docs = []
 faculties = ['fakultet-it/raspisaniya/',
@@ -20,5 +23,4 @@ for faculty in faculties:
 i = 0
 for doc in docs:
     i += 1
-    print(doc)
     wget.download(doc, './files/' + str(i) + '.xls')
