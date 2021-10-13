@@ -1,9 +1,17 @@
 import xlrd
 
 
-file = 'D://Projects/excelparser/1.xls'
+file = 'C://users/sznvn/Desktop/files/1.xls'
 excel_data_file = xlrd.open_workbook(file)
-sheet = excel_data_file.sheet_by_index(0)
+sheet = excel_data_file.sheet_by_index(6)
+
+for row in range(sheet.nrows):
+    print("________________________________________________________")
+    for cell in range(sheet.ncols):
+        value = str(sheet.cell(row, cell).value)
+        if (value.find("неделя") >= 0 ):
+                print("WEEK COORDINATES", row, cell)
+        print(value, "\t\t\t\t\t\tcoords: ", row, ' ', cell)
 
 
 def date(a):
@@ -16,7 +24,6 @@ def day(row):
         if sheet.cell(row, 0).value != "":
             return sheet.cell(row, 0).value.strip(' ')
         row -= 2
-
 
 def GroupSched(col):
     s = ''

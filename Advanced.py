@@ -3,7 +3,7 @@ import xlrd
 import os
 
 c = 0
-os.system("clear.bat")
+# os.system("clear.bat")
 
 def openXLS(name):
     file = 'C:/Users/sznvn/Desktop/files/' + name + '.xls'

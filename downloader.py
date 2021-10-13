@@ -1,23 +1,26 @@
-#import wget
+import os
+import wget
 import requests
 from bs4 import BeautifulSoup
 
-URL = 'https://www.muiv.ru/studentu/fakultety-i-kafedry/fakultet-it/raspisaniya/'
-page = requests.get(URL).text
-soup = BeautifulSoup(page, "html.parser").find_all('p', 'm-doc__name')
+# os.system("./clean.sh")
+
 docs = []
+faculties = ['fakultet-it/raspisaniya/',
+             'fakultet-upravleniya/raspisaniya-zanyatiy-fakulteta-upravlekniya.php',
+             'fakultet-ekonomiki-i-finansov/raspisaniya-zanyatiy-fakulteta-ekonomiki-i-finansov.php',
+             'yuridicheskiy-fakultet/raspisaniya-zanyatiy-yuridicheskogo-fakulteta.php']
+
+for faculty in faculties:
+    url = 'https://www.muiv.ru/studentu/fakultety-i-kafedry/' + faculty
+    page = requests.get(url).text
+    tags = BeautifulSoup(page, "html.parser").find_all('p', 'm-doc__name')
+    for tag in tags:
+        gateway = 'https://www.muiv.ru' + tag.find('a').get('href')
+        if gateway.endswith('xls'):
+            docs.append(gateway)
+
 i = 0
-# asoup = soup.find_all('p', 'm-doc__name')
-
-for a in soup:
-    docs.append('https://www.muiv.ru' + a.find('a').get('href'))
-
-
-#govno peredelat'
-#for doc in docs:
-#    name = doc.split('/')[6]
-#    print(name)
-#    dir = '/output' + name[0]
-#    file = open(dir, 'w')
-#    file.write(requests.get(doc).text)
-#print(page)
+for doc in docs:
+    i += 1
+    wget.download(doc, 'C://users/sznvn/Desktop/files/' + str(i) + '.xls')
